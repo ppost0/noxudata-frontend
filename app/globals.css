@@ -24,14 +24,11 @@ body {
   font-size: 1rem;
 }
 
-table {
-  border-top-left-radius: 15px;
-  border-top-right-radius: 15px;
-}
 
 th {
   padding: 7px 10px;
   font-weight: 400;
+  text-overflow: ellipsis;
 }
 
 tr {
@@ -40,6 +37,16 @@ tr {
 
 td {
   padding: 10px;
+  text-overflow: ellipsis;
+  width: auto;
+}
+
+
+.table-btns {
+  font-size: 0.9em;
+  border: 1px solid #cbd5e1;
+  padding: 10px 14px;
+  border-radius: 6px;
 }
 
 @layer utilities {
