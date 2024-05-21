@@ -1,7 +1,38 @@
+'use client'
+
 import Image from 'next/image';
+import { useState, useEffect } from 'react';
+import { io } from 'socket.io-client';
+
+
 
 export default function Home() {
+
+  const [inbox, setInbox] = useState<any>([]);
+  const [message, setMessage] = useState('');
+  const [socket, setSocket] = useState<any>(undefined);
+
+  const handleSendMessage = () => {
+    console.log(message);
+    socket.emit('message', message);
+  }
+
+
+  useEffect(() => {
+
+    const socket = io('http://localhost:3006');
+
+    socket.on('message', (message) => {
+      setInbox((inbox: any) => [...inbox, message]);
+    })
+
+    setSocket(socket);
+
+  }, [])
+
+
   return (
+
     <div className='flex flex-col h-screen'>
 
       <header id='querySection' className='flex items-center justify-center flex-[1_1_auto] min-h-[104px]'>
@@ -112,6 +143,7 @@ export default function Home() {
               </tbody>
             </table>
 
+
             <div id='tableFooter' className='outline outline-1 outline-slate-300 rounded-b-lg'>
               <div id='extraRows' className='flex items-center gap-2 text-slate-600 bg-slate-50 p-2 font-medium border-b border-1 border-slate-300'>
                 <img src='/info.svg' className='size-6'></img>
@@ -135,6 +167,12 @@ export default function Home() {
 
       </main>
 
+      <div>
+        {inbox.map((entry: string, index: number) => (
+          <p key={index}>{entry}</p>
+        ))}
+      </div>
+
 
       <footer id='chatModule' className='flex flex-col items-center flex-[1_1_auto] min-h-[144px] border-t border-1 border-slate-400'>
         <div>
@@ -151,8 +189,8 @@ export default function Home() {
               <img src='/sort.svg' className='inline-block size-4 cursor-pointer ml-2 mr-2'></img>
             </button>
             <div className='flex items-center outline outline-1 outline-slate-300 rounded-r-lg p-2'>
-              <input placeholder='Start a new chat' className='pl-2 w-[50vw]'></input>
-              <img src='/send.svg' className='size-8 cursor-pointer'></img>
+              <input id='chatInput' onChange={(e) => setMessage(e.target.value)} placeholder='Start a new chat' className='pl-2 w-[50vw]'></input>
+              <img src='/send.svg' onClick={handleSendMessage} className='size-8 cursor-pointer'></img>
             </div>
             <button className='outline outline-1 outline-[#DC2626] text-[#DC2626] px-6 rounded-lg ml-4'>End Chat</button>
           </div>
