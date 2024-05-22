@@ -189,7 +189,12 @@ export default function Home() {
               <img src='/sort.svg' className='inline-block size-4 cursor-pointer ml-2 mr-2'></img>
             </button>
             <div className='flex items-center outline outline-1 outline-slate-300 rounded-r-lg p-2'>
-              <input id='chatInput' onChange={(e) => setMessage(e.target.value)} placeholder='Start a new chat' className='pl-2 w-[50vw]'></input>
+              <input id='chatInput' onKeyUp={(e)=>{
+                console.log(e.key)
+                if (e.key === 'Enter' || e.keyCode === 13) {
+                  return handleSendMessage();
+                }
+          }} onChange={(e) => setMessage(e.target.value)} placeholder='Start a new chat' className='pl-2 w-[50vw]'></input>
               <img src='/send.svg' onClick={handleSendMessage} className='size-8 cursor-pointer'></img>
             </div>
             <button className='outline outline-1 outline-[#DC2626] text-[#DC2626] px-6 rounded-lg ml-4'>End Chat</button>
